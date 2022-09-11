@@ -1,3 +1,3 @@
-/**
- * DO THE WORK HERE
- */
+import OssfScoreCardSDK from "./features";
+
+export default OssfScoreCardSDK;
