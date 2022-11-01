@@ -7,7 +7,6 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"tsc --w\" \"nodemon dist/indes.js",
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "test": "mocha --parallel",
@@ -42,7 +41,6 @@
     "@types/node": "^18.7.16",
     "c8": "^7.12.0",
     "chai": "^4.3.6",
-    "concurrently": "^7.4.0",
     "eslint": "^8.23.0",
     "mocha": "^10.0.0",
     "ts-node": "^10.9.1",
