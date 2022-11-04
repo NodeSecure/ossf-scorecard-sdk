@@ -17,6 +17,9 @@
     "type": "git",
     "url": "git+https://github.com/NodeSecure/ossf-scorecard-sdk.git"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "ossf",
     "openssf",
