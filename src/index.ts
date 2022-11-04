@@ -3,15 +3,7 @@ import { fetch } from "undici";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
-const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev/projects";
-
-export interface OpenSSFOptions {
-  /**
-   * @description VCS platform. eg. github.com
-   * @default github.com
-   */
-  platform?: string;
-}
+const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
 
 export type ScorecardCheck = {
   name: string;
@@ -39,26 +31,48 @@ export type ScorecardResult = {
   checks: ScorecardCheck[];
 };
 
+export interface IResultOptions {
+  /**
+   * @description VCS platform. eg. github.com
+   * @default github.com
+   */
+  platform?: string;
+}
+
 /**
  * @description Get a repository's ScorecardResult
  * @see https://api.securityscorecards.dev/#/results/getResult
  */
 export async function result(
   repository: string,
-  options: OpenSSFOptions = {}
+  options: IResultOptions = {}
 ): Promise<ScorecardResult> {
   const { platform = kDefaultPlatform } = options;
 
-  const { href } = new URL(`${kOpenSSFScorecardRestApi}/${platform}/${repository}`);
-
-  const response = await fetch(href);
+  const response = await fetch(
+    new URL(`/projects/${platform}/${repository}`, kOpenSSFScorecardRestApi)
+  );
   if (!response.ok) {
-    throw new Error("The content requested could not be found");
+    throw new Error(response.statusText);
   }
 
   const data = (await response.json()) as ScorecardResult;
 
   return data;
+}
+
+export interface IBadgeOptions extends IResultOptions {
+  /**
+   * Style to render the badge
+   *
+   * @default flat
+   */
+  style?: "plastic" | "flat" | "flat-square" | "for-the-badge" | "social";
+}
+
+export interface BadgeResult {
+  image: string;
+  svg: string;
 }
 
 /**
@@ -67,20 +81,21 @@ export async function result(
  */
 export async function badge(
   repository: string,
-  options: OpenSSFOptions = {}
-) {
-  const { platform = kDefaultPlatform } = options;
+  options: IBadgeOptions = {}
+): Promise<BadgeResult> {
+  const { platform = kDefaultPlatform, style = "flat" } = options;
 
-  const { href } = new URL(
-    `${kOpenSSFScorecardRestApi}/${platform}/${repository}/badge`
-  );
+  const apiUrl = new URL(`/projects/${platform}/${repository}/badge`, kOpenSSFScorecardRestApi);
+  apiUrl.searchParams.set("style", style);
 
-  const response = await fetch(href);
-
-  const text = await response.text();
-  if (text.includes("openssf scorecard: invalid repo path")) {
-    throw new Error("invalid repo path");
+  const response = await fetch(apiUrl);
+  const svg = await response.text();
+  if (svg.includes("invalid repo path")) {
+    throw new Error("Invalid repo path");
   }
 
-  return response.url;
+  return {
+    image: response.url,
+    svg
+  };
 }

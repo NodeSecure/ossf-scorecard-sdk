@@ -55,7 +55,7 @@ console.log(data);
 
 Options are described with the following TypeScript interface:
 ```ts
-export interface OpenSSFOptions {
+export interface IResultOptions {
   /**
    * @description VCS platform. eg. github.com
    * @default github.com
@@ -66,7 +66,7 @@ export interface OpenSSFOptions {
 
 ## API
 
-### result(repository: string, options?: OpenSSFOptions): Promise< ScorecardResult >
+### result(repository: string, options?: IResultOptions): Promise< ScorecardResult >
 Return the OpenSSF ScorecardResult for a given organization and repository.
 
 The response is typed using the following set of types:
@@ -98,8 +98,38 @@ export type ScorecardResult = {
 };
 ```
 
-### badge(repository: string, options?: OpenSSFOptions): Promise< string >
+### badge(repository: string, options?: IBadgeOptions): Promise< BadgeResult >
 Return a string URL to the badge image of a given organization and repository.
+
+The badge method has an additional `style` options.
+
+```ts
+export interface IBadgeOptions extends IResultOptions {
+  /**
+   * Style to render the badge
+   *
+   * @default flat
+   */
+  style?: "plastic" | "flat" | "flat-square" | "for-the-badge" | "social";
+}
+```
+
+Then the response is described by the `BadgeResult` interface:
+```ts
+export interface BadgeResult {
+  /**
+   * HTTPS link to shields.io
+   * 
+   * @example
+   * https://img.shields.io/ossf-scorecard/github.com/NodeSecure/scanner?label=openssf%20scorecard&style=flat
+   */
+  image: string;
+  /**
+   * HTML SVG balise
+   */
+  svg: string;
+}
+```
 
 ## Contributors ✨
 
