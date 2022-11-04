@@ -1,10 +1,25 @@
-# ossf-scorecard-sdk
+<p align="center"><h1 align="center">
+  ossf-scorecard-sdk
+</h1>
 
-![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/ossf-scorecard-sdk/master/package.json&query=$.version&label=Version)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/ossf-scorecard-sdk/commit-activity)
-[![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/NodeSecure/ossf-scorecard-sdk/blob/master/LICENSE)
+<p align="center">
+  Node.js SDK for <a href="https://github.com/ossf/scorecard">OpenSSF scorecard</a>
+</p>
 
-Node.js SDK for [OpenSSF scorecard](https://github.com/ossf/scorecard)
+<p align="center">
+    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+        <img src="https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/ossf-scorecard-sdk/master/package.json&query=$.version&label=Version">
+    </a>
+    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+        <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="maintenance">
+    </a>
+    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+        <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+    </a>
+    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+        <img src="https://img.shields.io/github/workflow/status/NodeSecure/ossf-scorecard-sdk/Node.js%20CI" alt="githubaction">
+    </a>
+</p>
 
 ## Requirements
 
@@ -22,8 +37,6 @@ $ yarn add @nodesecure/ossf-scorecard-sdk
 
 ## Usage example
 
-Basic usage example:
-
 ```ts
 import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
 
@@ -31,20 +44,16 @@ const data = await scorecard.result("NodeSecure/scanner");
 console.log(data);
 ```
 
-You can pass options to the result method `Result` as::
+You can also provide a custom `platform` with the **options** payload:
 
 ```ts
-import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
-
 const data = await scorecard.result("NodeSecure/scanner", {
   platform: "gitlab.com", // default to github.com
 });
 console.log(data);
 ```
 
-## API
-
-The OpenSSFOptions is described by the following interface:
+Options are described with the following TypeScript interface:
 ```ts
 export interface OpenSSFOptions {
   /**
@@ -55,9 +64,12 @@ export interface OpenSSFOptions {
 }
 ```
 
-### result(repository: string, options?: OpenSSFOptions): Promise< ScorecardResult >
-Return the OpenSSF ScorecardResult payload described by the following TS interface:
+## API
 
+### result(repository: string, options?: OpenSSFOptions): Promise< ScorecardResult >
+Return the OpenSSF ScorecardResult for a given organization and repository.
+
+The response is typed using the following set of types:
 ```ts
 export type ScorecardCheck = {
   name: string;
@@ -86,8 +98,8 @@ export type ScorecardResult = {
 };
 ```
 
-### result(repository: string, options?: OpenSSFOptions): Promise< string >
-Return a string URL to the badge image.
+### badge(repository: string, options?: OpenSSFOptions): Promise< string >
+Return a string URL to the badge image of a given organization and repository.
 
 ## Contributors ✨
 
