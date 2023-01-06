@@ -6,20 +6,12 @@
   Node.js SDK for <a href="https://github.com/ossf/scorecard">OpenSSF scorecard</a>
 </p>
 
-<p align="center">
-    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
-        <img src="https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/ossf-scorecard-sdk/master/package.json&query=$.version&label=Version">
-    </a>
-    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
-        <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="maintenance">
-    </a>
-    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
-        <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
-    </a>
-    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
-        <img src="https://img.shields.io/github/workflow/status/NodeSecure/ossf-scorecard-sdk/Node.js%20CI" alt="githubaction">
-    </a>
-</p>
+![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/ossf-scorecard-sdk/master/package.json&query=$.version&label=Version)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/ossf-scorecard-sdk/commit-activity)
+[![OpenSSF
+Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/ossf-scorecard-sdk/badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/ossf-scorecard-sdk)
+[![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/NodeSecure/ossf-scorecard-sdk/blob/master/LICENSE)
+![build](https://img.shields.io/github/actions/workflow/status/NodeSecure/ossf-scorecard-sdk/main.yml)
 
 ## Requirements
 
