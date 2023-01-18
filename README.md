@@ -6,12 +6,23 @@
   Node.js SDK for <a href="https://github.com/ossf/scorecard">OpenSSF scorecard</a>
 </p>
 
-![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/ossf-scorecard-sdk/master/package.json&query=$.version&label=Version)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/ossf-scorecard-sdk/commit-activity)
-[![OpenSSF
-Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/ossf-scorecard-sdk/badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/ossf-scorecard-sdk)
-[![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/NodeSecure/ossf-scorecard-sdk/blob/master/LICENSE)
-![build](https://img.shields.io/github/actions/workflow/status/NodeSecure/ossf-scorecard-sdk/main.yml)
+<p align="center">
+    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+      <img src="https://img.shields.io/github/package-json/v/NodeSecure/ossf-scorecard-sdk?style=for-the-badge" alt="npm version">
+    </a>
+     <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+      <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge" alt="maintained">
+    </a>
+    <a href="https://github.com/NodeSecure/ossf-scorecard-sdk">
+      <img src="https://img.shields.io/github/license/NodeSecure/ossf-scorecard-sdk?style=for-the-badge" alt="license">
+    </a>
+    <a href="https://api.securityscorecards.dev/projects/github.com/NodeSecure/ossf-scorecard-sdk">
+      <img src="https://api.securityscorecards.dev/projects/github.com/NodeSecure/ossf-scorecard-sdk/badge?style=for-the-badge" alt="ossf scorecard">
+    </a>
+    <a href="https://github.com/NodeSecure/vulnera/actions?query=workflow%3A%22Node.js+CI%22">
+      <img src="https://img.shields.io/github/actions/workflow/status/NodeSecure/ossf-scorecard-sdk/main.yml?style=for-the-badge" alt="github ci workflow">
+    </a>
+</p>
 
 ## Requirements
 
@@ -46,6 +57,7 @@ console.log(data);
 ```
 
 Options are described with the following TypeScript interface:
+
 ```ts
 export interface IResultOptions {
   /**
@@ -59,9 +71,11 @@ export interface IResultOptions {
 ## API
 
 ### result(repository: string, options?: IResultOptions): Promise< ScorecardResult >
+
 Return the OpenSSF ScorecardResult for a given organization and repository.
 
 The response is typed using the following set of types:
+
 ```ts
 export type ScorecardCheck = {
   name: string;
@@ -91,6 +105,7 @@ export type ScorecardResult = {
 ```
 
 ### badge(repository: string, options?: IBadgeOptions): Promise< BadgeResult >
+
 Return a string URL to the badge image of a given organization and repository.
 
 The badge method has an additional `style` options.
@@ -107,11 +122,12 @@ export interface IBadgeOptions extends IResultOptions {
 ```
 
 Then the response is described by the `BadgeResult` interface:
+
 ```ts
 export interface BadgeResult {
   /**
    * HTTPS link to shields.io
-   * 
+   *
    * @example
    * https://img.shields.io/ossf-scorecard/github.com/NodeSecure/scanner?label=openssf%20scorecard&style=flat
    */
@@ -126,7 +142,9 @@ export interface BadgeResult {
 ## Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -149,4 +167,5 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
+
 MIT
