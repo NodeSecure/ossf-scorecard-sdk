@@ -39,7 +39,7 @@
   "homepage": "https://github.com/NodeSecure/ossf-scorecard-sdk#readme",
   "devDependencies": {
     "@nodesecure/eslint-config": "^1.5.0",
-    "@slimio/is": "^1.5.1",
+    "@slimio/is": "^2.0.0",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^10.0.0",
     "@types/node": "^18.11.9",
