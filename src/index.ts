@@ -3,7 +3,7 @@ import { fetch } from "undici";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
-const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
+export const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
 
 export type ScorecardCheck = {
   name: string;
