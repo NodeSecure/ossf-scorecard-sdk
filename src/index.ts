@@ -3,7 +3,7 @@ import { fetch } from "undici";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
-export const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
+export const API_URL = "https://api.securityscorecards.dev";
 
 export type ScorecardCheck = {
   name: string;
@@ -50,7 +50,7 @@ export async function result(
   const { platform = kDefaultPlatform } = options;
 
   const response = await fetch(
-    new URL(`/projects/${platform}/${repository}`, kOpenSSFScorecardRestApi)
+    new URL(`/projects/${platform}/${repository}`, API_URL)
   );
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -85,7 +85,7 @@ export async function badge(
 ): Promise<BadgeResult> {
   const { platform = kDefaultPlatform, style = "flat" } = options;
 
-  const apiUrl = new URL(`/projects/${platform}/${repository}/badge`, kOpenSSFScorecardRestApi);
+  const apiUrl = new URL(`/projects/${platform}/${repository}/badge`, API_URL);
   apiUrl.searchParams.set("style", style);
 
   const response = await fetch(apiUrl);
