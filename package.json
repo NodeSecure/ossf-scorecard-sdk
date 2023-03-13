@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "mocha --parallel",
+    "test": "globstar -- node --loader tsx --test \"test/*.spec.ts\"",
     "coverage": "c8 -r html npm test",
     "lint": "cross-env eslint src/*.ts"
   },
@@ -40,15 +40,13 @@
   "devDependencies": {
     "@nodesecure/eslint-config": "^1.5.0",
     "@slimio/is": "^2.0.0",
-    "@types/chai": "^4.3.3",
-    "@types/mocha": "^10.0.0",
     "@types/node": "^18.11.9",
     "c8": "^7.12.0",
-    "chai": "^4.3.6",
     "eslint": "^8.26.0",
+    "globstar": "^1.0.0",
     "is-svg": "^5.0.0",
-    "mocha": "^10.1.0",
     "ts-node": "^10.9.1",
+    "tsx": "^3.12.4",
     "typescript": "^4.8.4"
   },
   "dependencies": {
