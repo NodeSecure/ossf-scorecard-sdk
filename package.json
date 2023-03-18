@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "globstar -- node --loader tsx --test \"test/*.spec.ts\"",
+    "test": "node --loader tsx test/index.ts",
     "coverage": "c8 -r html npm test",
     "lint": "cross-env eslint src/*.ts"
   },
