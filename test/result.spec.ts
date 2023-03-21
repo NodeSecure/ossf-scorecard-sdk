@@ -1,7 +1,9 @@
 // Import Third-party Dependencies
-import { expect } from "chai";
+import assert from "node:assert";
 import Undici, { Interceptable } from "undici";
+import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import is from "@slimio/is";
+
 
 // Import Internal Dependencies
 import * as scorecard from "../src/index.js";
@@ -43,7 +45,7 @@ describe("#result() UT", () => {
       .reply(200, expectedResponse);
 
     const result = await scorecard.result(kDefaultRepository);
-    expect(result).to.deep.eq(expectedResponse);
+    assert.deepEqual(result, expectedResponse);
   });
 
   it("should throw an error for an unknown repository", async() => {
@@ -55,13 +57,13 @@ describe("#result() UT", () => {
       })
       .reply(404);
 
-    try {
-      await scorecard.result(expectedRepository);
-      expect(true).to.equal(false, "the test should never execute this assertion");
-    }
-    catch (e) {
-      expect(e.message, "Not Found");
-    }
+    await assert.rejects(
+      scorecard.result(expectedRepository),
+      {
+        name: "Error",
+        message : "Not Found"
+      }
+    )
   });
 });
 
@@ -69,10 +71,11 @@ describe("#result() UT", () => {
   it("should return the ScorecardResult for NodeSecure/scanner", async() => {
     const result = await scorecard.result(kDefaultRepository);
 
-    expect(is.plainObject(result)).to.eq(true);
-    expect(
-      Object.keys(result).sort()
-    ).to.deep.equal(["date", "repo", "scorecard", "score", "checks"].sort());
+    assert.equal(is.plainObject(result), true);
+    assert.deepStrictEqual(
+      Object.keys(result).sort(),
+      ["date", "repo", "scorecard", "score", "checks"].sort()
+    );
   });
 });
 

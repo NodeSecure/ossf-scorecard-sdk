@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "rootDir": "./src",
-    "types": ["node", "mocha"]
+    "types": ["node"]
   },
   "include": ["src", "src/schema/**/*.json", "src/index.ts"],
   "exclude": ["node_modules", "dist"]

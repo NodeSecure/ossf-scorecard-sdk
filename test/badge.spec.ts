@@ -1,6 +1,7 @@
 // Import Third-party Dependencies
-import { expect } from "chai";
-import Undici, { Interceptable } from "undici";
+import assert from 'node:assert';
+import { after, afterEach, before, beforeEach, describe, it } from 'node:test'
+import Undici, { Interceptable } from 'undici';
 import isSvg from "is-svg";
 import is from "@slimio/is";
 
@@ -47,7 +48,7 @@ describe("#badge() UT", () => {
       .reply(200, expectedData.svg);
 
     const data = await scorecard.badge(kDefaultRepository);
-    expect(data).to.deep.eq(expectedData);
+    assert.deepEqual(data, expectedData);
   });
 });
 
@@ -55,23 +56,24 @@ describe("#badge() FT", () => {
   it("should return the BadgeResult for NodeSecure/scanner", async() => {
     const result = await scorecard.badge(kDefaultRepository);
 
-    expect(is.plainObject(result)).to.eq(true);
-    expect(isSvg(result.svg)).to.eq(true);
-
+    assert.equal(is.plainObject(result), true);
+    assert.equal(isSvg(result.svg), true);
+   
     const imageUrl = new URL(result.image);
-    expect(imageUrl.origin).to.equal("https://img.shields.io");
+    assert.strictEqual(imageUrl.origin, "https://img.shields.io");  
   });
 
   it("should throw an error for an unknown repository", async() => {
-    try {
-      await scorecard.badge("NodeSecure/foobar");
-      expect(true).to.equal(false, "the test should never execute this assertion");
-    }
-    catch (e) {
-      expect(e.message, "Invalid repo path");
-    }
+    await assert.rejects(
+      scorecard.badge("NodeSecure/foobar"),
+      {
+        name: "Error",
+        message : "Invalid repo path"
+      }
+    )
   });
 });
+
 
 function getPath(repository: string): string {
   return `/projects/github.com/${repository}/badge`;
