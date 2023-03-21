@@ -57,13 +57,13 @@ describe("#result() UT", () => {
       })
       .reply(404);
 
-    try {
-      await scorecard.result(expectedRepository);
-      assert.strictEqual(true,false, "the test should never execute this assertion");
-    }
-    catch (e) {
-      assert(e.message, "Not Found")
-    }
+    await assert.rejects(
+      scorecard.result(expectedRepository),
+      {
+        name: "Error",
+        message : "Not Found"
+      }
+    )
   });
 });
 

@@ -64,13 +64,13 @@ describe("#badge() FT", () => {
   });
 
   it("should throw an error for an unknown repository", async() => {
-    try {
-      await scorecard.badge("NodeSecure/foobar");
-      assert.strictEqual(true,false, "the test should never execute this assertion");
-    }
-    catch (e) {
-      assert(e.message, "Invalid repo path");
-    }
+    await assert.rejects(
+      scorecard.badge("NodeSecure/foobar"),
+      {
+        name: "Error",
+        message : "Invalid repo path"
+      }
+    )
   });
 });
 
