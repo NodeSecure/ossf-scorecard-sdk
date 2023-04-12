@@ -1,6 +1,8 @@
-// Import Third-party Dependencies
+// Import Node.js Dependencies
 import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
+
+// Import Third-party Dependencies
 import Undici, { Interceptable } from "undici";
 import isSvg from "is-svg";
 import is from "@slimio/is";
