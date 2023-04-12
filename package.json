@@ -1,6 +1,6 @@
 {
   "name": "@nodesecure/ossf-scorecard-sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Node.js SDK for OpenSSF scorecard",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
