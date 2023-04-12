@@ -61,9 +61,9 @@ describe("#result() UT", () => {
       scorecard.result(expectedRepository),
       {
         name: "Error",
-        message : "Not Found"
+        message: "Not Found"
       }
-    )
+    );
   });
 });
 
