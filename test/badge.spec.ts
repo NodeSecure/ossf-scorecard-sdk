@@ -1,7 +1,9 @@
+// Import Node.js Dependencies
+import assert from "node:assert";
+import { after, afterEach, before, beforeEach, describe, it } from "node:test";
+
 // Import Third-party Dependencies
-import assert from 'node:assert';
-import { after, afterEach, before, beforeEach, describe, it } from 'node:test'
-import Undici, { Interceptable } from 'undici';
+import Undici, { Interceptable } from "undici";
 import isSvg from "is-svg";
 import is from "@slimio/is";
 
@@ -58,9 +60,9 @@ describe("#badge() FT", () => {
 
     assert.equal(is.plainObject(result), true);
     assert.equal(isSvg(result.svg), true);
-   
+
     const imageUrl = new URL(result.image);
-    assert.strictEqual(imageUrl.origin, "https://img.shields.io");  
+    assert.strictEqual(imageUrl.origin, "https://img.shields.io");
   });
 
   it("should throw an error for an unknown repository", async() => {
@@ -68,9 +70,9 @@ describe("#badge() FT", () => {
       scorecard.badge("NodeSecure/foobar"),
       {
         name: "Error",
-        message : "Invalid repo path"
+        message: "Invalid repo path"
       }
-    )
+    );
   });
 });
 

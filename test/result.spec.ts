@@ -1,9 +1,10 @@
-// Import Third-party Dependencies
+// Import Node.js Dependencies
 import assert from "node:assert";
-import Undici, { Interceptable } from "undici";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
-import is from "@slimio/is";
 
+// Import Third-party Dependencies
+import Undici, { Interceptable } from "undici";
+import is from "@slimio/is";
 
 // Import Internal Dependencies
 import * as scorecard from "../src/index.js";
@@ -61,9 +62,9 @@ describe("#result() UT", () => {
       scorecard.result(expectedRepository),
       {
         name: "Error",
-        message : "Not Found"
+        message: "Not Found"
       }
-    )
+    );
   });
 });
 
