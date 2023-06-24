@@ -128,6 +128,20 @@ describe("#result() FT", () => {
       ["date", "repo", "scorecard", "score", "checks"].sort()
     );
   });
+
+  it("should throw when given a package and npm resolve is falsy", async() => {
+    assert.rejects(async() => scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: false }), {
+      name: "Error",
+      message: "Invalid repository, cannot find it on GitHub"
+    });
+  });
+
+  it("should throw when given an unknown npm package", async() => {
+    assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: true }), {
+      name: "Error",
+      message: "Invalid repository, cannot find it on GitHub or NPM registry"
+    });
+  });
 });
 
 function getPath(repository: string): string {

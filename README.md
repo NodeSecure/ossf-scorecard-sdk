@@ -47,7 +47,7 @@ const data = await scorecard.result("NodeSecure/scanner");
 console.log(data);
 ```
 
-You can also provide a custom `platform` with the **options** payload:
+You can provide a custom `platform` with the **options** payload:
 
 ```ts
 const data = await scorecard.result("NodeSecure/scanner", {
@@ -56,6 +56,14 @@ const data = await scorecard.result("NodeSecure/scanner", {
 console.log(data);
 ```
 
+You can disable `resolveOnNpmRegistry` option which is `true` by default.
+
+```ts
+const data = await scorecard.result("NodeSecure/scanner", {
+  resolveOnNpmRegistry: false, // default to true
+});
+console.log(data);
+```
 Options are described with the following TypeScript interface:
 
 ```ts
@@ -65,6 +73,11 @@ export interface IResultOptions {
    * @default github.com
    */
   platform?: string;
+  /**
+   * @description Try to resolve the given repository on the NPM registry if its not found on the given platform.
+   * @default true
+   */
+  resolveOnNpmRegistry?: boolean;
 }
 ```
 
