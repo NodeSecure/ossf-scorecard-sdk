@@ -91,22 +91,20 @@ export async function result(
     const data = await response.json() as any;
     formattedRepository = data.full_name;
   }
-  catch {
+  catch (error) {
     if (!resolveOnNpmRegistry) {
-      throw new Error("Invalid repository, cannot find it on GitHub");
+      throw new Error("Invalid repository, cannot find it on GitHub", {
+        cause: error
+      });
     }
-
-    let failed = false;
 
     try {
       formattedRepository = await getNpmRepository(repository);
     }
-    catch {
-      failed = true;
-    }
-
-    if (failed) {
-      throw new Error("Invalid repository, cannot find it on GitHub or NPM registry");
+    catch (error) {
+      throw new Error("Invalid repository, cannot find it on GitHub or NPM registry", {
+        cause: error
+      });
     }
   }
 
