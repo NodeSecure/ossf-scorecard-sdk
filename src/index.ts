@@ -42,6 +42,11 @@ export interface IResultOptions {
    * @default github.com
    */
   platform?: string;
+  /**
+   * @description Try to resolve the given repository on the NPM registry if its not found on the given platform.
+   * @default true
+   */
+  resolveOnNpmRegistry?: boolean;
 }
 
 async function getNpmRepository(repository: string): Promise<string> {
@@ -67,7 +72,10 @@ export async function result(
   options: IResultOptions = {}
 ): Promise<ScorecardResult> {
   let formattedRepository = repository;
-  const { platform = kDefaultPlatform } = options;
+  const {
+    platform = kDefaultPlatform,
+    resolveOnNpmRegistry = true
+  } = options;
   const [owner, repo] = repository.replace("@", "").split("/");
 
   try {
@@ -84,12 +92,20 @@ export async function result(
     formattedRepository = data.full_name;
   }
   catch {
-    // If the repository is not found, we try to retrieve it from the NPM registry
-    // i.e: if given repository is "@nodesecure/cli"
+    if (!resolveOnNpmRegistry) {
+      throw new Error("Invalid repository, cannot find it on GitHub");
+    }
+
+    let failed = false;
+
     try {
       formattedRepository = await getNpmRepository(repository);
     }
     catch {
+      failed = true;
+    }
+
+    if (failed) {
       throw new Error("Invalid repository, cannot find it on GitHub or NPM registry");
     }
   }
