@@ -1,9 +1,5 @@
-<p align="center"><h1 align="center">
-  ossf-scorecard-sdk
-</h1>
-
 <p align="center">
-  Node.js SDK for <a href="https://github.com/ossf/scorecard">OpenSSF scorecard</a>
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/4438263/265200624-394fd7a2-3824-4fd4-845a-b53d0c7a6352.jpg" alt="@nodesecure/ossf-scorecard-sdk">
 </p>
 
 <p align="center">
@@ -23,6 +19,7 @@
       <img src="https://img.shields.io/github/actions/workflow/status/NodeSecure/ossf-scorecard-sdk/main.yml?style=for-the-badge" alt="github ci workflow">
     </a>
 </p>
+
 
 ## Requirements
 
