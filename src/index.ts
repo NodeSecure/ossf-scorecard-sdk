@@ -1,13 +1,15 @@
 // Import Third-party Dependencies
-import { fetch } from "undici";
+import { get } from "@myunisoft/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies
 import { repositoryFromUrl } from "./utils/repositoryFromUrl.js";
+import { GitHubRepository, GitLabProject } from "./utils/internalTypes.js";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
 const kGitHubApiUrl = "https://api.github.com";
+const kGitLabApiUrl = "https://gitlab.com";
 export const API_URL = "https://api.securityscorecards.dev";
 
 export type ScorecardCheck = {
@@ -41,7 +43,7 @@ export interface IResultOptions {
    * @description VCS platform. eg. github.com
    * @default github.com
    */
-  platform?: string;
+  platform?: "github.com" | "github.corp.com" | "gitlab.com";
   /**
    * @description Try to resolve the given repository on the NPM registry if its not found on the given platform.
    * @default true
@@ -63,6 +65,22 @@ async function getNpmRepository(repository: string): Promise<string> {
   throw new Error("Cannot find the latest version of the given repository");
 }
 
+async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<string> {
+  const { data } = await get<GitHubRepository>(
+    new URL(`/repos/${owner}/${repo}`, kGitHubApiUrl)
+  );
+
+  return data.full_name;
+}
+
+async function retrieveRepositoryOnGitLab(owner: string, repo: string): Promise<string> {
+  const { data } = await get<GitLabProject>(
+    new URL(`/api/v4/projects/${owner}%2F${repo}`, kGitLabApiUrl)
+  );
+
+  return data.path_with_namespace;
+}
+
 /**
  * @description Get a repository's ScorecardResult
  * @see https://api.securityscorecards.dev/#/results/getResult
@@ -78,44 +96,41 @@ export async function result(
   } = options;
   const [owner, repo] = repository.replace("@", "").split("/");
 
-  try {
-    // We try to retrieve the repository with the GitHub API because
+  // We don't try to resolve repository via GitHub or NPM API when platform is GHES
+  if (platform !== "github.corp.com") {
+    try {
+    // We try to retrieve the repository with the GitHub or GitLab API because
     // Scorecard API is case sensitive, i.e if we pass "nodesecure/cli",
     // we must reformat it to "NodeSecure/cli"
-    const response = await fetch(
-      new URL(`/repos/${owner}/${repo}`, kGitHubApiUrl)
-    );
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-    const data = await response.json() as any;
-    formattedRepository = data.full_name;
-  }
-  catch (error) {
-    if (!resolveOnNpmRegistry) {
-      throw new Error("Invalid repository, cannot find it on GitHub", {
-        cause: error
-      });
-    }
-
-    try {
-      formattedRepository = await getNpmRepository(repository);
+      if (platform === "github.com") {
+        formattedRepository = await retrieveRepositoryOnGithub(owner, repo);
+      }
+      else if (platform === "gitlab.com") {
+        formattedRepository = await retrieveRepositoryOnGitLab(owner, repo);
+      }
     }
     catch (error) {
-      throw new Error("Invalid repository, cannot find it on GitHub or NPM registry", {
-        cause: error
-      });
+      const platformName = platform.split(".")[0];
+      if (!resolveOnNpmRegistry) {
+        throw new Error(`Invalid repository, cannot find it on ${platformName}`, {
+          cause: error
+        });
+      }
+
+      try {
+        formattedRepository = await getNpmRepository(repository);
+      }
+      catch (error) {
+        throw new Error(`Invalid repository, cannot find it on ${platformName} or NPM registry`, {
+          cause: error
+        });
+      }
     }
   }
 
-  const response = await fetch(
+  const { data } = await get<ScorecardResult>(
     new URL(`/projects/${platform}/${formattedRepository}`, API_URL)
   );
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  const data = (await response.json()) as ScorecardResult;
 
   return data;
 }

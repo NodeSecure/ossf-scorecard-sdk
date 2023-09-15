@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 
 // Import Third-party Dependencies
-import Undici, { Interceptable } from "undici";
+import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@myunisoft/httpie";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
 
@@ -15,10 +15,10 @@ const kDefaultRepository = "NodeSecure/scanner";
 const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
 const kNpmApi = "https://registry.npmjs.org";
 
-const kMockHttpAgent = new Undici.MockAgent({
+const kMockHttpAgent = new MockAgent({
   connections: 2
 });
-const kOriginalHttpDispatcher = Undici.getGlobalDispatcher();
+const kOriginalHttpDispatcher = getGlobalDispatcher();
 
 function npmApiExpectedResponse(repository: string): any {
   return () => {
@@ -32,13 +32,13 @@ function npmApiExpectedResponse(repository: string): any {
 describe("#result() UT", () => {
   before(() => {
     kMockHttpAgent.disableNetConnect();
-    Undici.setGlobalDispatcher(kMockHttpAgent);
+    setGlobalDispatcher(kMockHttpAgent);
     npmRegistrySdk.setHttpAgent(kMockHttpAgent);
   });
 
   after(() => {
     kMockHttpAgent.enableNetConnect();
-    Undici.setGlobalDispatcher(kOriginalHttpDispatcher);
+    setGlobalDispatcher(kOriginalHttpDispatcher);
   });
 
   let ossfScorecardClient: Interceptable;
@@ -61,7 +61,7 @@ describe("#result() UT", () => {
         method: "GET",
         path: (url) => url.startsWith(getPath(kDefaultRepository))
       })
-      .reply(200, expectedResponse);
+      .reply(200, expectedResponse, { headers: { "content-type": "application/json" } });
     npmClient
       .intercept({ path: `/${kDefaultRepository}`, method: "GET" })
       .reply(200, npmApiExpectedResponse(kDefaultRepository), { headers: { "content-type": "application/json" } });
@@ -129,17 +129,59 @@ describe("#result() FT", () => {
     );
   });
 
+  it("should return the ScorecardResult for gitlab-org/gitlab-ui (GitLab)", async() => {
+    const result = await scorecard.result("gitlab-org/gitlab-ui", { platform: "gitlab.com", resolveOnNpmRegistry: false });
+
+    assert.equal(is.plainObject(result), true);
+    assert.equal(result.repo.name, "gitlab.com/gitlab-org/gitlab-ui");
+    assert.deepStrictEqual(
+      Object.keys(result).sort(),
+      ["date", "repo", "scorecard", "score", "checks"].sort()
+    );
+  });
+
+  it("should return the ScorecardResult for @gitlab/ui (npm lib hosted on GitLab)", async() => {
+    const result = await scorecard.result("@gitlab/ui", { platform: "gitlab.com" });
+
+    assert.equal(is.plainObject(result), true);
+    assert.equal(result.repo.name, "gitlab.com/gitlab-org/gitlab-ui");
+    assert.deepStrictEqual(
+      Object.keys(result).sort(),
+      ["date", "repo", "scorecard", "score", "checks"].sort()
+    );
+  });
+
   it("should throw when given a package and npm resolve is falsy", async() => {
     assert.rejects(async() => scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: false }), {
       name: "Error",
-      message: "Invalid repository, cannot find it on GitHub"
+      message: "Invalid repository, cannot find it on github"
+    });
+  });
+
+  it("should throw when given a package and npm resolve is falsy (GitLab)", async() => {
+    assert.rejects(async() => scorecard.result("@unknown-package/for-sure", {
+      platform: "gitlab.com",
+      resolveOnNpmRegistry: false
+    }), {
+      name: "Error",
+      message: "Invalid repository, cannot find it on gitlab"
     });
   });
 
   it("should throw when given an unknown npm package", async() => {
     assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: true }), {
       name: "Error",
-      message: "Invalid repository, cannot find it on GitHub or NPM registry"
+      message: "Invalid repository, cannot find it on github or NPM registry"
+    });
+  });
+
+  it("should throw when given an unknown npm package (GitLab)", async() => {
+    assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", {
+      platform: "gitlab.com",
+      resolveOnNpmRegistry: true
+    }), {
+      name: "Error",
+      message: "Invalid repository, cannot find it on gitlab or NPM registry"
     });
   });
 });
