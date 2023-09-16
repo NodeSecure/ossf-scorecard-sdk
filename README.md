@@ -44,12 +44,17 @@ const data = await scorecard.result("NodeSecure/scanner");
 console.log(data);
 ```
 
-You can provide a custom `platform` with the **options** payload:
+You can provide either `**GitHub** (`github.com`), **GitHub Enterprise Server (GHES)** (`github.corp.com`) or **GitLab** (`gitlab.com`) platform with the options payload:
 
-```ts
 const data = await scorecard.result("NodeSecure/scanner", {
   platform: "gitlab.com", // default to github.com
 });
+console.log(data);
+```
+
+You can provide a NPM library:
+```ts
+const data = await scorecard.result("@nodesecure/scanner");
 console.log(data);
 ```
 
@@ -69,7 +74,7 @@ export interface IResultOptions {
    * @description VCS platform. eg. github.com
    * @default github.com
    */
-  platform?: string;
+  platform?: "github.com" | "github.corp.com" | "gitlab.com";
   /**
    * @description Try to resolve the given repository on the NPM registry if its not found on the given platform.
    * @default true
