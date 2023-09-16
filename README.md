@@ -23,7 +23,7 @@
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) v16 or higher
+- [Node.js](https://nodejs.org/en/) v18 or higher
 
 ## Getting Started
 
@@ -44,9 +44,10 @@ const data = await scorecard.result("NodeSecure/scanner");
 console.log(data);
 ```
 
-You can provide either `**GitHub** (`github.com`), **GitHub Enterprise Server (GHES)** (`github.corp.com`) or **GitLab** (`gitlab.com`) platform with the options payload:
+You can provide either **GitHub** (`github.com`), **GitHub Enterprise Server (GHES)** (`github.corp.com`) or **GitLab** (`gitlab.com`) platform with the options payload:
 
-const data = await scorecard.result("NodeSecure/scanner", {
+```ts
+const data = await scorecard.result("gitlab-org/gitlab-ui", {
   platform: "gitlab.com", // default to github.com
 });
 console.log(data);
