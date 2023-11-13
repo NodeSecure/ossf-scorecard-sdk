@@ -50,7 +50,7 @@
     "glob": "^10.3.4",
     "is-svg": "^5.0.0",
     "registry-url": "^6.0.1",
-    "tsx": "^3.12.10",
+    "tsx": "^4.1.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
