@@ -154,6 +154,17 @@ describe("#result() FT", () => {
     );
   });
 
+  it("should return the ScorecardResult for @nodesecure/scanner when not resolving version control", async() => {
+    const result = await scorecard.result(`@${kDefaultRepository.toLowerCase()}`, { resolveOnVersionControl: false });
+
+    assert.equal(is.plainObject(result), true);
+    assert.equal(result.repo.name, `github.com/${kDefaultRepository}`);
+    assert.deepStrictEqual(
+      Object.keys(result).sort(),
+      ["date", "repo", "scorecard", "score", "checks"].sort()
+    );
+  });
+
   it("should return the ScorecardResult for gitlab-org/gitlab-ui (GitLab)", async() => {
     const result = await scorecard.result("gitlab-org/gitlab-ui", { platform: "gitlab.com", resolveOnNpmRegistry: false });
 

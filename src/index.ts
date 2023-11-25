@@ -141,6 +141,16 @@ export async function result(
       }
     }
   }
+  else if (resolveOnNpmRegistry && !resolveOnVersionControl) {
+    try {
+      formattedRepository = await getNpmRepository(repository);
+    }
+    catch (error) {
+      throw new Error(`Invalid repository, cannot find it on NPM registry`, {
+        cause: error
+      });
+    }
+  }
 
   const { data } = await get<ScorecardResult>(
     new URL(`/projects/${platform}/${formattedRepository}`, API_URL)
