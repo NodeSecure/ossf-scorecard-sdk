@@ -118,6 +118,31 @@ describe("#result() FT", () => {
     );
   });
 
+  it("should return the ScorecardResult for NodeSecure/scanner when not resolving on GitHub", async() => {
+    const result = await scorecard.result("NodeSecure/scanner", {
+      resolveOnVersionControl: false,
+      resolveOnNpmRegistry: false
+    });
+
+    assert.equal(is.plainObject(result), true);
+    assert.equal(result.repo.name, `github.com/${kDefaultRepository}`);
+    assert.deepStrictEqual(
+      Object.keys(result).sort(),
+      ["date", "repo", "scorecard", "score", "checks"].sort()
+    );
+  });
+
+  it("should throw for nodesecure/scanner when not resolving on GitHub", async() => {
+    // throws because the repository is malformed (should be exactly NodeSecure/scanner)
+    await assert.rejects(async() => await scorecard.result("nodesecure/scanner", {
+      resolveOnVersionControl: false,
+      resolveOnNpmRegistry: false
+    }), {
+      name: "Error",
+      message: "Not Found"
+    });
+  });
+
   it("should return the ScorecardResult for @nodesecure/scanner", async() => {
     const result = await scorecard.result(`@${kDefaultRepository.toLowerCase()}`);
 

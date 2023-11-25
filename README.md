@@ -61,6 +61,10 @@ console.log(data);
 
 You can disable `resolveOnNpmRegistry` option which is `true` by default.
 
+> [!TIP]
+> You can disable version control resolve when you are sure the given repository is well formatted using `resolveOnVersionControl: false`.
+> This can save you from GitHub/GitLab rate limit when working with lots of repositories.
+
 ```ts
 const data = await scorecard.result("NodeSecure/scanner", {
   resolveOnNpmRegistry: false, // default to true
@@ -81,12 +85,21 @@ export interface IResultOptions {
    * @default true
    */
   resolveOnNpmRegistry?: boolean;
+  /**
+   * @description Try to resolve the given repository on the given platform. This can be useful when the given repository
+   * is not exactly the same as the one on the given platform (case sensitive).
+   * @default true
+   */
+  resolveOnVersionControl?: boolean;
 }
 ```
 
 ## API
 
 ### result(repository: string, options?: IResultOptions): Promise< ScorecardResult >
+
+> [!TIP]
+> You can use `GITHUB_TOKEN` environment variable to avoid rate-limit when `resolveOnVersionControl` is true.
 
 Return the OpenSSF ScorecardResult for a given organization and repository.
 
