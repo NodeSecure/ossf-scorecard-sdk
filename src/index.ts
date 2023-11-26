@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config();
+
 // Import Third-party Dependencies
 import { get } from "@myunisoft/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
@@ -9,6 +12,9 @@ import { GitHubRepository, GitLabProject } from "./utils/internalTypes.js";
 // CONSTANTS
 const kDefaultPlatform = "github.com";
 const kGitHubApiUrl = "https://api.github.com";
+const kGitHubRequestOptions = {
+  authorization: process.env.GITHUB_TOKEN ?? ""
+};
 const kGitLabApiUrl = "https://gitlab.com";
 export const API_URL = "https://api.securityscorecards.dev";
 
@@ -49,6 +55,12 @@ export interface IResultOptions {
    * @default true
    */
   resolveOnNpmRegistry?: boolean;
+  /**
+   * @description Try to resolve the given repository on the given platform. This can be useful when the given repository
+   * is not exactly the same as the one on the given platform (case sensitive).
+   * @default true
+   */
+  resolveOnVersionControl?: boolean;
 }
 
 async function getNpmRepository(repository: string): Promise<string> {
@@ -67,7 +79,8 @@ async function getNpmRepository(repository: string): Promise<string> {
 
 async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<string> {
   const { data } = await get<GitHubRepository>(
-    new URL(`/repos/${owner}/${repo}`, kGitHubApiUrl)
+    new URL(`/repos/${owner}/${repo}`, kGitHubApiUrl),
+    kGitHubRequestOptions
   );
 
   return data.full_name;
@@ -92,12 +105,13 @@ export async function result(
   let formattedRepository = repository;
   const {
     platform = kDefaultPlatform,
-    resolveOnNpmRegistry = true
+    resolveOnNpmRegistry = true,
+    resolveOnVersionControl = true
   } = options;
   const [owner, repo] = repository.replace("@", "").split("/");
 
   // We don't try to resolve repository via GitHub or NPM API when platform is GHES
-  if (platform !== "github.corp.com") {
+  if (platform !== "github.corp.com" && resolveOnVersionControl) {
     try {
     // We try to retrieve the repository with the GitHub or GitLab API because
     // Scorecard API is case sensitive, i.e if we pass "nodesecure/cli",
@@ -125,6 +139,16 @@ export async function result(
           cause: error
         });
       }
+    }
+  }
+  else if (resolveOnNpmRegistry && !resolveOnVersionControl) {
+    try {
+      formattedRepository = await getNpmRepository(repository);
+    }
+    catch (error) {
+      throw new Error(`Invalid repository, cannot find it on NPM registry`, {
+        cause: error
+      });
     }
   }
 
