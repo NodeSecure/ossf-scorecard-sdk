@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@myunisoft/httpie": "^2.0.3",
-    "@nodesecure/npm-registry-sdk": "^1.6.1",
+    "@nodesecure/npm-registry-sdk": "^2.1.0",
     "dotenv": "^16.3.1"
   }
 }
