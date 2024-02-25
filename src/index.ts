@@ -61,17 +61,22 @@ export interface IResultOptions {
    * @default true
    */
   resolveOnVersionControl?: boolean;
+  /**
+   * @description The version of the npm package (when `resolveOnNpmRegistry` only) to retrieve the scorecard for.
+   * @default "latest"
+   */
+  version?: string;
 }
 
-async function getNpmRepository(repository: string): Promise<string> {
+async function getNpmRepository(repository: string, version: string): Promise<string> {
   const data = await packument(repository);
-  const latestVersion = data["dist-tags"].latest;
+  const latestVersion = data["dist-tags"].latest!;
+  const packageVersion = data.versions[version === "latest" ? latestVersion : version];
 
-  if (!latestVersion) {
-    throw new Error("Cannot find the latest version of the given repository");
+  if (!packageVersion) {
+    throw new Error(`Cannot find the version '${version}' of the given repository`);
   }
 
-  const packageVersion = data.versions[latestVersion];
   const homepage = packageVersion.homepage || null;
   const repo = packageVersion.repository;
   const repoUrl = typeof repo === "string" ? repo : repo?.url;
@@ -108,7 +113,8 @@ export async function result(
   const {
     platform = kDefaultPlatform,
     resolveOnNpmRegistry = true,
-    resolveOnVersionControl = true
+    resolveOnVersionControl = true,
+    version = "latest"
   } = options;
   const [owner, repo] = repository.replace("@", "").split("/");
 
@@ -134,7 +140,7 @@ export async function result(
       }
 
       try {
-        formattedRepository = await getNpmRepository(repository);
+        formattedRepository = await getNpmRepository(repository, version);
       }
       catch (error) {
         throw new Error(`Invalid repository, cannot find it on ${platformName} or NPM registry`, {
@@ -145,7 +151,7 @@ export async function result(
   }
   else if (resolveOnNpmRegistry && !resolveOnVersionControl) {
     try {
-      formattedRepository = await getNpmRepository(repository);
+      formattedRepository = await getNpmRepository(repository, version);
     }
     catch (error) {
       throw new Error(`Invalid repository, cannot find it on NPM registry`, {
