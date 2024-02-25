@@ -42,7 +42,6 @@
   "homepage": "https://github.com/NodeSecure/ossf-scorecard-sdk#readme",
   "devDependencies": {
     "@nodesecure/eslint-config": "^1.9.0",
-    "@npm/types": "^1.0.2",
     "@slimio/is": "^2.0.0",
     "@types/node": "^20.11.20",
     "c8": "^9.1.0",
@@ -55,7 +54,7 @@
   },
   "dependencies": {
     "@myunisoft/httpie": "^4.0.0",
-    "@nodesecure/npm-registry-sdk": "^2.1.0",
+    "@nodesecure/npm-registry-sdk": "^2.1.1",
     "dotenv": "^16.4.5"
   }
 }
