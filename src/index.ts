@@ -67,14 +67,16 @@ async function getNpmRepository(repository: string): Promise<string> {
   const data = await packument(repository);
   const latestVersion = data["dist-tags"].latest;
 
-  if (latestVersion) {
-    const repository = data.versions[latestVersion].repository;
-    const url = typeof repository === "string" ? repository : repository?.url;
-
-    return repositoryFromUrl(url ?? "");
+  if (!latestVersion) {
+    throw new Error("Cannot find the latest version of the given repository");
   }
 
-  throw new Error("Cannot find the latest version of the given repository");
+  const packageVersion = data.versions[latestVersion];
+  const homepage = packageVersion.homepage || null;
+  const repo = packageVersion.repository;
+  const repoUrl = typeof repo === "string" ? repo : repo?.url;
+
+  return repositoryFromUrl(homepage ?? repoUrl ?? "");
 }
 
 async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<string> {

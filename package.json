@@ -41,21 +41,20 @@
   },
   "homepage": "https://github.com/NodeSecure/ossf-scorecard-sdk#readme",
   "devDependencies": {
-    "@nodesecure/eslint-config": "^1.8.0",
-    "@npm/types": "^1.0.2",
+    "@nodesecure/eslint-config": "^1.9.0",
     "@slimio/is": "^2.0.0",
-    "@types/node": "^20.10.0",
-    "c8": "^8.0.1",
-    "eslint": "^8.54.0",
+    "@types/node": "^20.11.20",
+    "c8": "^9.1.0",
+    "eslint": "^8.57.0",
     "glob": "^10.3.10",
     "is-svg": "^5.0.0",
     "registry-url": "^6.0.1",
-    "tsx": "^4.5.0",
-    "typescript": "^5.3.2"
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@myunisoft/httpie": "^2.0.3",
-    "@nodesecure/npm-registry-sdk": "^1.6.1",
-    "dotenv": "^16.3.1"
+    "@myunisoft/httpie": "^4.0.0",
+    "@nodesecure/npm-registry-sdk": "^2.1.1",
+    "dotenv": "^16.4.5"
   }
 }

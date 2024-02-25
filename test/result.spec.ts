@@ -88,7 +88,7 @@ describe("#result() UT", () => {
     await assert.rejects(
       scorecard.result(expectedRepository),
       {
-        name: "Error",
+        name: "HttpieOnHttpError",
         message: "Not Found"
       }
     );
@@ -138,7 +138,7 @@ describe("#result() FT", () => {
       resolveOnVersionControl: false,
       resolveOnNpmRegistry: false
     }), {
-      name: "Error",
+      name: "HttpieOnHttpError",
       message: "Not Found"
     });
   });
