@@ -4,6 +4,7 @@ config();
 // Import Third-party Dependencies
 import { get } from "@myunisoft/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
+import type { PackumentVersion } from "@npm/types";
 
 // Import Internal Dependencies
 import { repositoryFromUrl } from "./utils/repositoryFromUrl.js";
@@ -44,6 +45,9 @@ export type ScorecardResult = {
   checks: ScorecardCheck[];
 };
 
+// TODO: https://github.com/NodeSecure/npm-registry-sdk/pull/125
+type FixedPackumentVersion = PackumentVersion & { homepage: string };
+
 export interface IResultOptions {
   /**
    * @description VCS platform. eg. github.com
@@ -67,14 +71,16 @@ async function getNpmRepository(repository: string): Promise<string> {
   const data = await packument(repository);
   const latestVersion = data["dist-tags"].latest;
 
-  if (latestVersion) {
-    const repository = data.versions[latestVersion].repository;
-    const url = typeof repository === "string" ? repository : repository?.url;
-
-    return repositoryFromUrl(url ?? "");
+  if (!latestVersion) {
+    throw new Error("Cannot find the latest version of the given repository");
   }
 
-  throw new Error("Cannot find the latest version of the given repository");
+  const packageVersion = data.versions[latestVersion] as FixedPackumentVersion;
+  const homepage = packageVersion.homepage || null;
+  const repo = packageVersion.repository;
+  const repoUrl = typeof repo === "string" ? repo : repo?.url;
+
+  return repositoryFromUrl(homepage ?? repoUrl ?? "");
 }
 
 async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<string> {
