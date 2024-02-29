@@ -95,7 +95,7 @@ export interface IResultOptions {
    * @description The version of the npm package (when `resolveOnNpmRegistry` only) to retrieve the scorecard for.
    * @default "latest"
    */
-  version?: string;
+  npmPackageVersion?: string;
 }
 ```
 

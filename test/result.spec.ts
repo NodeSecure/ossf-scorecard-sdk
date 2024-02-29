@@ -223,7 +223,10 @@ describe("#result() FT", () => {
   });
 
   it("Should return a specific npm package ScorecardResult that does not have the repository set but has a homepage", async() => {
-    const result = await scorecard.result(`@topcli/prompts`, { resolveOnVersionControl: false, version: "1.9.0" });
+    const result = await scorecard.result(`@topcli/prompts`, {
+      resolveOnVersionControl: false,
+      npmPackageVersion: "1.9.0"
+    });
 
     assert.equal(is.plainObject(result), true);
     assert.equal(result.repo.name, `github.com/TopCli/prompts`);
@@ -240,7 +243,7 @@ describe("#result() FT", () => {
     try {
       await scorecard.result(`@topcli/prompts`, {
         resolveOnVersionControl: false,
-        version: "99999.0.0"
+        npmPackageVersion: "99999.0.0"
       });
     }
     catch (error) {

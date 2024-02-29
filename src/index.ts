@@ -65,7 +65,7 @@ export interface IResultOptions {
    * @description The version of the npm package (when `resolveOnNpmRegistry` only) to retrieve the scorecard for.
    * @default "latest"
    */
-  version?: string;
+  npmPackageVersion?: string;
 }
 
 async function getNpmRepository(repository: string, version: string): Promise<string> {
@@ -114,7 +114,7 @@ export async function result(
     platform = kDefaultPlatform,
     resolveOnNpmRegistry = true,
     resolveOnVersionControl = true,
-    version = "latest"
+    npmPackageVersion = "latest"
   } = options;
   const [owner, repo] = repository.replace("@", "").split("/");
 
@@ -140,7 +140,7 @@ export async function result(
       }
 
       try {
-        formattedRepository = await getNpmRepository(repository, version);
+        formattedRepository = await getNpmRepository(repository, npmPackageVersion);
       }
       catch (error) {
         throw new Error(`Invalid repository, cannot find it on ${platformName} or NPM registry`, {
@@ -151,7 +151,7 @@ export async function result(
   }
   else if (resolveOnNpmRegistry && !resolveOnVersionControl) {
     try {
-      formattedRepository = await getNpmRepository(repository, version);
+      formattedRepository = await getNpmRepository(repository, npmPackageVersion);
     }
     catch (error) {
       throw new Error(`Invalid repository, cannot find it on NPM registry`, {
