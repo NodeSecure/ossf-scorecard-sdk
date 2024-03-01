@@ -6,6 +6,7 @@ import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@myunisoft/httpie";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
+import { tspl, type Plan } from "@matteo.collina/tspl";
 
 // Import Internal Dependencies
 import * as scorecard from "../src/index.js";
@@ -188,14 +189,14 @@ describe("#result() FT", () => {
   });
 
   it("should throw when given a package and npm resolve is falsy", async() => {
-    assert.rejects(async() => scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: false }), {
+    await assert.rejects(async() => scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: false }), {
       name: "Error",
       message: "Invalid repository, cannot find it on github"
     });
   });
 
   it("should throw when given a package and npm resolve is falsy (GitLab)", async() => {
-    assert.rejects(async() => scorecard.result("@unknown-package/for-sure", {
+    await assert.rejects(async() => scorecard.result("@unknown-package/for-sure", {
       platform: "gitlab.com",
       resolveOnNpmRegistry: false
     }), {
@@ -205,20 +206,51 @@ describe("#result() FT", () => {
   });
 
   it("should throw when given an unknown npm package", async() => {
-    assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: true }), {
+    await assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", { resolveOnNpmRegistry: true }), {
       name: "Error",
       message: "Invalid repository, cannot find it on github or NPM registry"
     });
   });
 
   it("should throw when given an unknown npm package (GitLab)", async() => {
-    assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", {
+    await assert.rejects(async() => await scorecard.result("@unknown-package/for-sure", {
       platform: "gitlab.com",
       resolveOnNpmRegistry: true
     }), {
       name: "Error",
       message: "Invalid repository, cannot find it on gitlab or NPM registry"
     });
+  });
+
+  it("Should return a specific npm package ScorecardResult that does not have the repository set but has a homepage", async() => {
+    const result = await scorecard.result(`@topcli/prompts`, {
+      resolveOnVersionControl: false,
+      npmPackageVersion: "1.9.0"
+    });
+
+    assert.equal(is.plainObject(result), true);
+    assert.equal(result.repo.name, `github.com/TopCli/prompts`);
+    assert.deepStrictEqual(
+      Object.keys(result).sort(),
+      ["date", "repo", "scorecard", "score", "checks"].sort()
+    );
+  });
+
+  it("Should throws when the given package version does not exists", async(testContext) => {
+    const tsplAssert: Plan = tspl(testContext, { plan: 3 });
+
+    // We cannot use assert.rejects to test Error.cause
+    try {
+      await scorecard.result(`@topcli/prompts`, {
+        resolveOnVersionControl: false,
+        npmPackageVersion: "99999.0.0"
+      });
+    }
+    catch (error) {
+      tsplAssert.strictEqual(error.name, "Error");
+      tsplAssert.strictEqual(error.message, "Invalid repository, cannot find it on NPM registry");
+      tsplAssert.match(error.cause.message, /^Cannot find the version '99999.0.0' of the given repository/);
+    }
   });
 });
 
