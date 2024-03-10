@@ -81,7 +81,7 @@ async function getNpmRepository(repository: string, version: string): Promise<st
   const repo = packageVersion.repository;
   const repoUrl = typeof repo === "string" ? repo : repo?.url;
 
-  return repositoryFromUrl(homepage ?? repoUrl ?? "");
+  return repositoryFromUrl(repoUrl ?? homepage ?? "");
 }
 
 async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<string> {
