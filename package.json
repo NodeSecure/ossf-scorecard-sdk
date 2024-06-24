@@ -54,7 +54,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@myunisoft/httpie": "^4.0.0",
+    "@myunisoft/httpie": "^5.0.0",
     "@nodesecure/npm-registry-sdk": "^2.1.1",
     "dotenv": "^16.4.5"
   }
