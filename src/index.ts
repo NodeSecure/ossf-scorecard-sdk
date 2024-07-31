@@ -1,6 +1,3 @@
-import { config } from "dotenv";
-config();
-
 // Import Third-party Dependencies
 import { get } from "@myunisoft/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
