@@ -12,7 +12,7 @@ export function repositoryFromUrl(url: string): string {
 
     return pathname.replace(".git", "");
   }
-  catch (error) {
+  catch (error: any) {
     if (error.code === "ERR_INVALID_URL") {
       return url;
     }

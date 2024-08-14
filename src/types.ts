@@ -26,7 +26,7 @@ export interface GitLabProject {
   public_jobs: boolean;
   path_with_namespace: string;
   path: string;
-  permissions: Permissions;
+  permissions: GitHubPermissions;
   runners_token: string;
   request_access_enabled: boolean;
   shared_runners_enabled: boolean;
