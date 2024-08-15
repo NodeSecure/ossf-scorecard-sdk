@@ -4,7 +4,7 @@ import { packument } from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies
 import { repositoryFromUrl } from "./utils/repositoryFromUrl.js";
-import { GitHubRepository, GitLabProject } from "./utils/internalTypes.js";
+import type { GitHubRepository, GitLabProject } from "./types.js";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
@@ -65,7 +65,10 @@ export interface IResultOptions {
   npmPackageVersion?: string;
 }
 
-async function getNpmRepository(repository: string, version: string): Promise<string> {
+async function getNpmRepository(
+  repository: string,
+  version: string
+): Promise<string> {
   const data = await packument(repository);
   const latestVersion = data["dist-tags"].latest!;
   const packageVersion = data.versions[version === "latest" ? latestVersion : version];
@@ -81,7 +84,10 @@ async function getNpmRepository(repository: string, version: string): Promise<st
   return repositoryFromUrl(repoUrl ?? homepage ?? "");
 }
 
-async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<string> {
+async function retrieveRepositoryOnGithub(
+  owner: string,
+  repo: string
+): Promise<string> {
   const { data } = await get<GitHubRepository>(
     new URL(`/repos/${owner}/${repo}`, kGitHubApiUrl),
     kGitHubRequestOptions
@@ -90,7 +96,10 @@ async function retrieveRepositoryOnGithub(owner: string, repo: string): Promise<
   return data.full_name;
 }
 
-async function retrieveRepositoryOnGitLab(owner: string, repo: string): Promise<string> {
+async function retrieveRepositoryOnGitLab(
+  owner: string,
+  repo: string
+): Promise<string> {
   const { data } = await get<GitLabProject>(
     new URL(`/api/v4/projects/${owner}%2F${repo}`, kGitLabApiUrl)
   );

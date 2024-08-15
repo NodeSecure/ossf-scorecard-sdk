@@ -76,7 +76,6 @@ describe("#badge() FT", () => {
   });
 });
 
-
 function getPath(repository: string): string {
   return `/projects/github.com/${repository}/badge`;
 }
