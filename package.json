@@ -43,7 +43,7 @@
   "devDependencies": {
     "@matteo.collina/tspl": "^0.1.1",
     "@nodesecure/eslint-config": "^1.9.0",
-    "@openally/config.eslint": "^1.0.0",
+    "@openally/config.eslint": "^2.0.0",
     "@openally/config.typescript": "^1.0.3",
     "@slimio/is": "^2.0.0",
     "@types/node": "^22.2.0",
