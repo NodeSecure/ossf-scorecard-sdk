@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/NodeSecure/ossf-scorecard-sdk#readme",
   "devDependencies": {
-    "@matteo.collina/tspl": "^0.1.1",
+    "@matteo.collina/tspl": "^0.2.0",
     "@nodesecure/eslint-config": "^1.9.0",
     "@openally/config.eslint": "^2.0.0",
     "@openally/config.typescript": "^1.0.3",
