@@ -160,7 +160,7 @@ export async function result(
       formattedRepository = await getNpmRepository(repository, npmPackageVersion);
     }
     catch (error) {
-      throw new Error(`Invalid repository, cannot find it on NPM registry`, {
+      throw new Error("Invalid repository, cannot find it on NPM registry", {
         cause: error
       });
     }

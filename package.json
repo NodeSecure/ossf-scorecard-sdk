@@ -12,8 +12,8 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "node --test",
-    "coverage": "node --test-coverage",
+    "test-only": "tsx --test \"**/*.spec.ts\"",
+    "test": "tsx --test \"**/*.spec.ts\" --test-coverage",
     "lint": "eslint src/*.ts"
   },
   "repository": {
