@@ -1,5 +1,5 @@
 // Import Third-party Dependencies
-import { get } from "@myunisoft/httpie";
+import { get } from "@openally/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies

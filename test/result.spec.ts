@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 
 // Import Third-party Dependencies
-import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@myunisoft/httpie";
+import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@openally/httpie";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
 import { tspl, type Plan } from "@matteo.collina/tspl";
