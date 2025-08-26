@@ -6,7 +6,6 @@ import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@myunisoft/httpie";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
-import { tspl, type Plan } from "@matteo.collina/tspl";
 
 // Import Internal Dependencies
 import * as scorecard from "../src/index.js";
@@ -177,7 +176,10 @@ describe("#result() FT", () => {
     );
   });
 
-  it("should return the ScorecardResult for @gitlab/ui (npm lib hosted on GitLab)", async() => {
+  /**
+   * The test has been skipped since gitlab-ui has been moved
+   */
+  it.skip("should return the ScorecardResult for @gitlab/ui (npm lib hosted on GitLab)", async() => {
     const result = await scorecard.result("@gitlab/ui", { platform: "gitlab.com" });
 
     assert.equal(is.plainObject(result), true);
@@ -223,33 +225,33 @@ describe("#result() FT", () => {
   });
 
   it("Should return a specific npm package ScorecardResult that does not have the repository set but has a homepage", async() => {
-    const result = await scorecard.result(`@topcli/prompts`, {
+    const result = await scorecard.result("@topcli/prompts", {
       resolveOnVersionControl: false,
       npmPackageVersion: "1.9.0"
     });
 
     assert.equal(is.plainObject(result), true);
-    assert.equal(result.repo.name, `github.com/TopCli/prompts`);
+    assert.equal(result.repo.name, "github.com/TopCli/prompts");
     assert.deepStrictEqual(
       Object.keys(result).sort(),
       ["date", "repo", "scorecard", "score", "checks"].sort()
     );
   });
 
-  it("Should throws when the given package version does not exists", async(testContext) => {
-    const tsplAssert: Plan = tspl(testContext, { plan: 3 });
+  it("Should throws when the given package version does not exists", async(t) => {
+    t.plan(3);
 
     // We cannot use assert.rejects to test Error.cause
     try {
-      await scorecard.result(`@topcli/prompts`, {
+      await scorecard.result("@topcli/prompts", {
         resolveOnVersionControl: false,
         npmPackageVersion: "99999.0.0"
       });
     }
     catch (error) {
-      tsplAssert.strictEqual(error.name, "Error");
-      tsplAssert.strictEqual(error.message, "Invalid repository, cannot find it on NPM registry");
-      tsplAssert.match(error.cause.message, /^Cannot find the version '99999.0.0' of the given repository/);
+      t.assert.equal(error.name, "Error");
+      t.assert.equal(error.message, "Invalid repository, cannot find it on NPM registry");
+      t.assert.match(error.cause.message, /^Cannot find the version '99999.0.0' of the given repository/);
     }
   });
 });
