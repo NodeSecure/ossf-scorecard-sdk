@@ -6,7 +6,6 @@ import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@openally/httpie";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
-import { tspl, type Plan } from "@matteo.collina/tspl";
 
 // Import Internal Dependencies
 import * as scorecard from "../src/index.js";
@@ -236,20 +235,19 @@ describe("#result() FT", () => {
     );
   });
 
-  it("Should throws when the given package version does not exists", async(testContext) => {
-    const tsplAssert: Plan = tspl(testContext, { plan: 3 });
-
+  it("Should throws when the given package version does not exists", async() => {
     // We cannot use assert.rejects to test Error.cause
     try {
       await scorecard.result(`@topcli/prompts`, {
         resolveOnVersionControl: false,
         npmPackageVersion: "99999.0.0"
       });
+      assert.fail("Expected an error to be thrown");
     }
     catch (error) {
-      tsplAssert.strictEqual(error.name, "Error");
-      tsplAssert.strictEqual(error.message, "Invalid repository, cannot find it on NPM registry");
-      tsplAssert.match(error.cause.message, /^Cannot find the version '99999.0.0' of the given repository/);
+      assert.strictEqual(error.name, "Error");
+      assert.strictEqual(error.message, "Invalid repository, cannot find it on NPM registry");
+      assert.match(error.cause.message, /^Cannot find the version '99999.0.0' of the given repository/);
     }
   });
 });
