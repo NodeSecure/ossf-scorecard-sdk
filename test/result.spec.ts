@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 
 // Import Third-party Dependencies
-import { MockAgent, getGlobalDispatcher, setGlobalDispatcher, Interceptable } from "@myunisoft/httpie";
+import Undici, { Interceptable, getGlobalDispatcher, setGlobalDispatcher } from "undici";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
 
@@ -15,7 +15,7 @@ const kDefaultRepository = "NodeSecure/scanner";
 const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
 const kNpmApi = "https://registry.npmjs.org";
 
-const kMockHttpAgent = new MockAgent({
+const kMockHttpAgent = new Undici.MockAgent({
   connections: 2
 });
 const kOriginalHttpDispatcher = getGlobalDispatcher();

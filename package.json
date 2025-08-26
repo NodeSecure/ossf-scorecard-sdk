@@ -50,7 +50,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@myunisoft/httpie": "^5.0.0",
-    "@nodesecure/npm-registry-sdk": "^4.0.0"
+    "@nodesecure/npm-registry-sdk": "^4.0.0",
+    "@openally/httpie": "^1.0.0"
   }
 }
