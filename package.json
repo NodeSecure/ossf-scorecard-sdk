@@ -13,7 +13,7 @@
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "test-only": "node --test ./**/*.spec.ts",
-    "test": "node --test-coverage --test ./**/*.spec.ts",
+    "test": "node --test ./**/*.spec.ts --test-coverage",
     "lint": "eslint src/*.ts"
   },
   "repository": {
