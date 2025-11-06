@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 // Import Internal Dependencies
-import { repositoryFromUrl } from "../src/utils/repositoryFromUrl.js";
+import { repositoryFromUrl } from "../src/utils/repositoryFromUrl.ts";
 
 describe("getRepositoryFromUrl()", () => {
   it("should return the repository given an url equal to the repository", () => {

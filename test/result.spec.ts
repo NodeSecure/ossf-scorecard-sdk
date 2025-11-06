@@ -3,19 +3,24 @@ import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 
 // Import Third-party Dependencies
-import Undici, { Interceptable, getGlobalDispatcher, setGlobalDispatcher } from "undici";
+import {
+  MockAgent,
+  type Interceptable,
+  getGlobalDispatcher,
+  setGlobalDispatcher
+} from "@openally/httpie";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies
-import * as scorecard from "../src/index.js";
+import * as scorecard from "../src/index.ts";
 
 // CONSTANTS
 const kDefaultRepository = "NodeSecure/scanner";
 const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
 const kNpmApi = "https://registry.npmjs.org";
 
-const kMockHttpAgent = new Undici.MockAgent({
+const kMockHttpAgent = new MockAgent({
   connections: 2
 });
 const kOriginalHttpDispatcher = getGlobalDispatcher();
@@ -248,7 +253,7 @@ describe("#result() FT", () => {
         npmPackageVersion: "99999.0.0"
       });
     }
-    catch (error) {
+    catch (error: any) {
       t.assert.equal(error.name, "Error");
       t.assert.equal(error.message, "Invalid repository, cannot find it on NPM registry");
       t.assert.match(error.cause.message, /^Cannot find the version '99999.0.0' of the given repository/);

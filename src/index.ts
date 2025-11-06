@@ -3,8 +3,8 @@ import { get } from "@openally/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies
-import { repositoryFromUrl } from "./utils/repositoryFromUrl.js";
-import type { GitHubRepository, GitLabProject } from "./types.js";
+import { repositoryFromUrl } from "./utils/repositoryFromUrl.ts";
+import type { GitHubRepository, GitLabProject } from "./types.ts";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";

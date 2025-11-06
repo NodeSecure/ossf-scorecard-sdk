@@ -3,29 +3,34 @@ import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 
 // Import Third-party Dependencies
-import Undici, { Interceptable } from "undici";
+import {
+  MockAgent,
+  setGlobalDispatcher,
+  getGlobalDispatcher,
+  type Interceptable
+} from "@openally/httpie";
 import isSvg from "is-svg";
 import is from "@slimio/is";
 
 // Import Internal Dependencies
-import * as scorecard from "../src/index.js";
+import * as scorecard from "../src/index.ts";
 
 // CONSTANTS
 const kDefaultRepository = "NodeSecure/scanner";
 const kOpenSSFScorecardRestApi = "https://api.securityscorecards.dev";
 
-const kMockHttpAgent = new Undici.MockAgent();
-const kOriginalHttpDispatcher = Undici.getGlobalDispatcher();
+const kMockHttpAgent = new MockAgent();
+const kOriginalHttpDispatcher = getGlobalDispatcher();
 
 describe("#badge() UT", () => {
   before(() => {
     kMockHttpAgent.disableNetConnect();
-    Undici.setGlobalDispatcher(kMockHttpAgent);
+    setGlobalDispatcher(kMockHttpAgent);
   });
 
   after(() => {
     kMockHttpAgent.enableNetConnect();
-    Undici.setGlobalDispatcher(kOriginalHttpDispatcher);
+    setGlobalDispatcher(kOriginalHttpDispatcher);
   });
 
   let client: Interceptable;
