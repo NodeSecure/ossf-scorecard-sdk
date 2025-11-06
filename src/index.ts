@@ -3,8 +3,8 @@ import { get } from "@openally/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies
-import { repositoryFromUrl } from "./utils/repositoryFromUrl.js";
-import type { GitHubRepository, GitLabProject } from "./types.js";
+import { repositoryFromUrl } from "./utils/repositoryFromUrl.ts";
+import type { GitHubRepository, GitLabProject } from "./types.ts";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
@@ -41,7 +41,7 @@ export type ScorecardResult = {
   checks: ScorecardCheck[];
 };
 
-export interface IResultOptions {
+export interface ResultOptions {
   /**
    * @description VCS platform. eg. github.com
    * @default github.com
@@ -113,7 +113,7 @@ async function retrieveRepositoryOnGitLab(
  */
 export async function result(
   repository: string,
-  options: IResultOptions = {}
+  options: ResultOptions = {}
 ): Promise<ScorecardResult> {
   let formattedRepository = repository;
   const {
@@ -173,7 +173,7 @@ export async function result(
   return data;
 }
 
-export interface IBadgeOptions extends IResultOptions {
+export interface BadgeOptions extends ResultOptions {
   /**
    * Style to render the badge
    *
@@ -193,7 +193,7 @@ export interface BadgeResult {
  */
 export async function badge(
   repository: string,
-  options: IBadgeOptions = {}
+  options: BadgeOptions = {}
 ): Promise<BadgeResult> {
   const { platform = kDefaultPlatform, style = "flat" } = options;
 

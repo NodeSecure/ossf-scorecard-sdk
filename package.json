@@ -12,8 +12,8 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test-only": "tsx --test \"**/*.spec.ts\"",
-    "test": "tsx --test \"**/*.spec.ts\" --test-coverage",
+    "test-only": "node --test ./**/*.spec.ts",
+    "test": "node --test ./**/*.spec.ts --test-coverage",
     "lint": "eslint src/*.ts"
   },
   "repository": {
@@ -42,11 +42,10 @@
   "homepage": "https://github.com/NodeSecure/ossf-scorecard-sdk#readme",
   "devDependencies": {
     "@openally/config.eslint": "^2.0.0",
-    "@openally/config.typescript": "^1.0.3",
+    "@openally/config.typescript": "^1.2.1",
     "@slimio/is": "^2.0.0",
     "@types/node": "^24.0.1",
     "is-svg": "^6.0.0",
-    "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
