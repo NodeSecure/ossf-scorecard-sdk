@@ -74,7 +74,7 @@ console.log(data);
 Options are described with the following TypeScript interface:
 
 ```ts
-export interface IResultOptions {
+export interface ResultOptions {
   /**
    * @description VCS platform. eg. github.com
    * @default github.com
@@ -101,7 +101,7 @@ export interface IResultOptions {
 
 ## API
 
-### result(repository: string, options?: IResultOptions): Promise< ScorecardResult >
+### result(repository: string, options?: ResultOptions): Promise< ScorecardResult >
 
 > [!TIP]
 > You can use `GITHUB_TOKEN` environment variable to avoid rate-limit when `resolveOnVersionControl` is true.
@@ -138,14 +138,14 @@ export type ScorecardResult = {
 };
 ```
 
-### badge(repository: string, options?: IBadgeOptions): Promise< BadgeResult >
+### badge(repository: string, options?: BadgeOptions): Promise< BadgeResult >
 
 Return a string URL to the badge image of a given organization and repository.
 
 The badge method has an additional `style` options.
 
 ```ts
-export interface IBadgeOptions extends IResultOptions {
+export interface BadgeOptions extends ResultOptions {
   /**
    * Style to render the badge
    *
