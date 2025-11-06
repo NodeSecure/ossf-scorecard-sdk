@@ -49,7 +49,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@nodesecure/npm-registry-sdk": "^4.1.0",
+    "@nodesecure/npm-registry-sdk": "4.4.0",
     "@openally/httpie": "^1.0.0"
   }
 }
