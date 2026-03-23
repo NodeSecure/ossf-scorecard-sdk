@@ -1,16 +1,18 @@
 // Import Third-party Dependencies
-import { get } from "@openally/httpie";
 import { packument } from "@nodesecure/npm-registry-sdk";
 
 // Import Internal Dependencies
 import { repositoryFromUrl } from "./utils/repositoryFromUrl.ts";
-import type { GitHubRepository, GitLabProject } from "./types.ts";
+import type {
+  GitHubRepository,
+  GitLabProject
+} from "./types.ts";
 
 // CONSTANTS
 const kDefaultPlatform = "github.com";
 const kGitHubApiUrl = "https://api.github.com";
-const kGitHubRequestOptions = {
-  authorization: process.env.GITHUB_TOKEN ?? ""
+const kGitHubRequestOptions: RequestInit = {
+  headers: { Authorization: process.env.GITHUB_TOKEN ?? "" }
 };
 const kGitLabApiUrl = "https://gitlab.com";
 export const API_URL = "https://api.securityscorecards.dev";
@@ -65,6 +67,18 @@ export interface ResultOptions {
   npmPackageVersion?: string;
 }
 
+async function fetchJson<T>(
+  url: URL,
+  init?: RequestInit
+): Promise<T> {
+  const response = await fetch(url, init);
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response.json() as Promise<T>;
+}
+
 async function getNpmRepository(
   repository: string,
   version: string
@@ -88,7 +102,7 @@ async function retrieveRepositoryOnGithub(
   owner: string,
   repo: string
 ): Promise<string> {
-  const { data } = await get<GitHubRepository>(
+  const data = await fetchJson<GitHubRepository>(
     new URL(`/repos/${owner}/${repo}`, kGitHubApiUrl),
     kGitHubRequestOptions
   );
@@ -100,7 +114,7 @@ async function retrieveRepositoryOnGitLab(
   owner: string,
   repo: string
 ): Promise<string> {
-  const { data } = await get<GitLabProject>(
+  const data = await fetchJson<GitLabProject>(
     new URL(`/api/v4/projects/${owner}%2F${repo}`, kGitLabApiUrl)
   );
 
@@ -166,11 +180,9 @@ export async function result(
     }
   }
 
-  const { data } = await get<ScorecardResult>(
+  return fetchJson<ScorecardResult>(
     new URL(`/projects/${platform}/${formattedRepository}`, API_URL)
   );
-
-  return data;
 }
 
 export interface BadgeOptions extends ResultOptions {

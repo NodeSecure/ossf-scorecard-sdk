@@ -8,7 +8,7 @@ import {
   setGlobalDispatcher,
   getGlobalDispatcher,
   type Interceptable
-} from "@openally/httpie";
+} from "undici";
 import isSvg from "is-svg";
 import is from "@slimio/is";
 
