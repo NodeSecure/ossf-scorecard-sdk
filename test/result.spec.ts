@@ -8,7 +8,7 @@ import {
   type Interceptable,
   getGlobalDispatcher,
   setGlobalDispatcher
-} from "@openally/httpie";
+} from "undici";
 import is from "@slimio/is";
 import * as npmRegistrySdk from "@nodesecure/npm-registry-sdk";
 
@@ -93,7 +93,7 @@ describe("#result() UT", () => {
     await assert.rejects(
       scorecard.result(expectedRepository),
       {
-        name: "HttpieOnHttpError",
+        name: "Error",
         message: "Not Found"
       }
     );
@@ -143,7 +143,7 @@ describe("#result() FT", () => {
       resolveOnVersionControl: false,
       resolveOnNpmRegistry: false
     }), {
-      name: "HttpieOnHttpError",
+      name: "Error",
       message: "Not Found"
     });
   });
