@@ -52,9 +52,9 @@
     "@types/node": "^25.0.3",
     "is-svg": "^6.0.0",
     "typescript": "^5.3.3",
-    "undici": "^7.0.0"
+    "undici": "7.24.5"
   },
   "dependencies": {
-    "@nodesecure/npm-registry-sdk": "4.5.1"
+    "@nodesecure/npm-registry-sdk": "4.5.2"
   }
 }
