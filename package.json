@@ -51,7 +51,7 @@
     "@slimio/is": "^2.0.0",
     "@types/node": "^25.0.3",
     "is-svg": "^6.0.0",
-    "typescript": "^5.3.3",
+    "typescript": "^6.0.2",
     "undici": "7.24.5"
   },
   "dependencies": {
