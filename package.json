@@ -46,13 +46,13 @@
   },
   "homepage": "https://github.com/NodeSecure/ossf-scorecard-sdk#readme",
   "devDependencies": {
-    "@openally/config.eslint": "^2.0.0",
+    "@openally/config.eslint": "^3.0.2",
     "@openally/config.typescript": "^1.2.1",
     "@slimio/is": "^2.0.0",
-    "@types/node": "^25.0.3",
+    "@types/node": "^26.6.3",
     "is-svg": "^6.0.0",
-    "typescript": "^6.0.2",
-    "undici": "7.29.1"
+    "typescript": "^7.0.2",
+    "undici": "8.11.2"
   },
   "dependencies": {
     "@nodesecure/npm-registry-sdk": "4.5.2"
